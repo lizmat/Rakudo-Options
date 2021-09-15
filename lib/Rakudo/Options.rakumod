@@ -75,7 +75,7 @@ class Rakudo::Options:ver<0.0.1>:auth<zef:lizmat> {
         without $!program {
             $!program := $!e.defined
               ?? ('-e', $!e)
-              !! $*PROGRAM-NAME;
+              !! $*PROGRAM.absolute;
         }
         $!e          := Empty                 without $!e;
         $!executable := $*EXECUTABLE.absolute without $!executable;
@@ -449,3 +449,5 @@ Copyright 2021 Elizabeth Mattijsen
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 
 =end pod
+
+# vim: expandtab shiftwidth=4
