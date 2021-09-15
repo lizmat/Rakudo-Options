@@ -96,24 +96,156 @@ The string of the `--target` flag to be considered specified.
 ACCESSORS
 =========
 
-include
+Please note that all accessors return `Empty` if they were not considered to be specified. This allows the accessors to also be used as booleans.
+
+Also note that all of the examples use the `$*RAKUDO-OPTIONS` dynamic variable, but that any ad-hoc created `Rakudo::Options` can also be used.
+
+Also note that each of these attributes (with the exception of `e`, `includes` and `modules` can be uses "as is" as parameter to the `run` function, or as a parameter to the creation of a `Proc::Async` object.
+
+e
+-
+
+The code that was considered to be specified with `-e`. If you want to transparently run a script, or the `-e` code, you should use the `.program` accessor.
+
+```raku
+say "running as a one-liner" if $*RAKUDO-OPTIONS;
+```
+
+encoding
+--------
+
+The command line parameter of the non-UTF8 encoding with which source-files are considered to be encoded.
+
+```raku
+if $*RAKUDO-OPTIONS.encoding -> $encoding {
+    say "Specified '$encoding' for source files";
+}
+```
+
+executable
+----------
+
+The string of the executable that is considered to be specified.
+
+```raku
+say "Running with the $*RAKUDO-OPTIONS.executable() executable";
+```
+
+I
+-
+
+A `List` of command line parameters of `-I` specifications, to be considered to have been specified.
+
+```raku
+if $*RAKUDO-OPTIONS.I -> @I {
+    say "Arguments: @I";
+}
+```
+
+includes
+--------
+
+A `List` of strings of the `-I` specifications to have considered to have been given.
+
+```raku
+if $*RAKUDO-OPTIONS.includes -> @includes {
+    say "Specified: @includes";
+}
+```
+
+ll-exception
+------------
+
+The command line parameter that indicates whether exceptions should throw the extended stack trace or not.
+
+```raku
+say "Will show extended stack trace" if $*RAKUDO-OPTIONS.ll-exception;
+```
+
+M
+-
+
+A `List` of command line parameters of `-M` specifications, to be considered to have been specified.
+
+```raku
+if $*RAKUDO-OPTIONS.M -> @M {
+    say "Arguments: @M";
+}
+```
+
+modules
 -------
 
-    has @.includes is built(:bind) = multiple('I');
-    has @.modules  is built(:bind) = multiple('M');
-    has $.ll-exception = nqp::existskey($options,'ll-exception');
-    has $.stagestats   = nqp::existskey($options,'stagestats');
-    has $.n            = nqp::existskey($options,'n');
-    has $.p            = nqp::existskey($options,'p');
-    has $.e            = nqp::hllize(nqp::atkey($options,'e'));
-    has $.executable;
-    has $.program;
-    has $.profile;
-    has $.optimize;
-    has $.encoding;
-    has $.target;
-    has $.I is built(False);
-    has $.M is built(False);
+A `List` of strings of the `-M` specifications to have considered to have been given.
+
+```raku
+if $*RAKUDO-OPTIONS.modules -> @modules {
+    say "Specified: @modules";
+}
+```
+
+n
+-
+
+The command line parameter that indicates the program should be run for each line of input.
+
+```raku
+say "Executing with -n" if $*RAKUDO-OPTIONS.n;
+```
+
+p
+-
+
+The command line parameter that indicates the program should be run for each line of input, and that `$_` should be printed after each line of input.
+
+```raku
+say "Executing with -p" if $*RAKUDO-OPTIONS.p;
+```
+
+optimize
+--------
+
+The command line parameter that indicates the optimization level.
+
+```raku
+say "Running with $_" with $*RAKUDO-OPTIONS.optimize;
+```
+
+program
+-------
+
+The command line parameter that indicates the program to be executed. Is either a string (in which case it is the name of the script to run) or a `List` consisting of `-e` and the code to executed.
+
+```raku
+say "Running $*RAKUDO-OPTIONS.program";
+```
+
+profile
+-------
+
+The command line parameter that indicates whether a profile should be made, and what type.
+
+```raku
+say "Creating a profile with $_" with $*RAKUDO-OPTIONS.profile;
+```
+
+stagestats
+----------
+
+The command line parameter that indicates whether stage statistics should be shown while compiling.
+
+```raku
+say "Showed stage statistics while compiling" if $*RAKUDO-OPTIONS.stagestats;
+```
+
+target
+------
+
+The command line parameter indicating the target of the compilation.
+
+```raku
+say "Compiling for target $_" with $*RAKUDO-OPTIONS.target;
+```
 
 AUTHOR
 ======

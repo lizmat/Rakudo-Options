@@ -250,23 +250,193 @@ The string of the C<--target> flag to be considered specified.
 
 =head1 ACCESSORS
 
-=head2 include
+Please note that all accessors return C<Empty> if they were not
+considered to be specified.  This allows the accessors to also be
+used as booleans.
 
-    has @.includes is built(:bind) = multiple('I');
-    has @.modules  is built(:bind) = multiple('M');
-    has $.ll-exception = nqp::existskey($options,'ll-exception');
-    has $.stagestats   = nqp::existskey($options,'stagestats');
-    has $.n            = nqp::existskey($options,'n');
-    has $.p            = nqp::existskey($options,'p');
-    has $.e            = nqp::hllize(nqp::atkey($options,'e'));
-    has $.executable;
-    has $.program;
-    has $.profile;
-    has $.optimize;
-    has $.encoding;
-    has $.target;
-    has $.I is built(False);
-    has $.M is built(False);
+Also note that all of the examples use the C<$*RAKUDO-OPTIONS>
+dynamic variable, but that any ad-hoc created C<Rakudo::Options>
+can also be used.
+
+Also note that each of these attributes (with the exception of
+C<e>, C<includes> and C<modules> can be uses "as is" as parameter
+to the C<run> function, or as a parameter to the creation of a
+C<Proc::Async> object.
+
+=head2 e
+
+The code that was considered to be specified with C<-e>.  If you
+want to transparently run a script, or the C<-e> code, you should
+use the C<.program> accessor.
+
+=begin code :lang<raku>
+
+say "running as a one-liner" if $*RAKUDO-OPTIONS;
+
+=end code
+
+=head2 encoding
+
+The command line parameter of the non-UTF8 encoding with which
+source-files are considered to be encoded.
+
+=begin code :lang<raku>
+
+if $*RAKUDO-OPTIONS.encoding -> $encoding {
+    say "Specified '$encoding' for source files";
+}
+
+=end code
+
+=head2 executable
+
+The string of the executable that is considered to be specified.
+
+=begin code :lang<raku>
+
+say "Running with the $*RAKUDO-OPTIONS.executable() executable";
+
+=end code
+
+=head2 I
+
+A C<List> of command line parameters of C<-I> specifications, to
+be considered to have been specified.
+
+=begin code :lang<raku>
+
+if $*RAKUDO-OPTIONS.I -> @I {
+    say "Arguments: @I";
+}
+
+=end code
+
+=head2 includes
+
+A C<List> of strings of the C<-I> specifications to have considered
+to have been given.
+
+=begin code :lang<raku>
+
+if $*RAKUDO-OPTIONS.includes -> @includes {
+    say "Specified: @includes";
+}
+
+=end code
+
+=head2 ll-exception
+
+The command line parameter that indicates whether exceptions should
+throw the extended stack trace or not.
+
+=begin code :lang<raku>
+
+say "Will show extended stack trace" if $*RAKUDO-OPTIONS.ll-exception;
+
+=end code
+
+=head2 M
+
+A C<List> of command line parameters of C<-M> specifications, to
+be considered to have been specified.
+
+=begin code :lang<raku>
+
+if $*RAKUDO-OPTIONS.M -> @M {
+    say "Arguments: @M";
+}
+
+=end code
+
+=head2 modules
+
+A C<List> of strings of the C<-M> specifications to have considered
+to have been given.
+
+=begin code :lang<raku>
+
+if $*RAKUDO-OPTIONS.modules -> @modules {
+    say "Specified: @modules";
+}
+
+=end code
+
+=head2 n
+
+The command line parameter that indicates the program should be run
+for each line of input.
+
+=begin code :lang<raku>
+
+say "Executing with -n" if $*RAKUDO-OPTIONS.n;
+
+=end code
+
+=head2 p
+
+The command line parameter that indicates the program should be run
+for each line of input, and that C<$_> should be printed after each
+line of input.
+
+=begin code :lang<raku>
+
+say "Executing with -p" if $*RAKUDO-OPTIONS.p;
+
+=end code
+
+=head2 optimize
+
+The command line parameter that indicates the optimization level.
+
+=begin code :lang<raku>
+
+say "Running with $_" with $*RAKUDO-OPTIONS.optimize;
+
+=end code
+
+=head2 program
+
+The command line parameter that indicates the program to be executed.
+Is either a string (in which case it is the name of the script to run)
+or a C<List> consisting of C<-e> and the code to executed.
+
+=begin code :lang<raku>
+
+say "Running $*RAKUDO-OPTIONS.program";
+
+=end code
+
+=head2 profile
+
+The command line parameter that indicates whether a profile should
+be made, and what type.
+
+=begin code :lang<raku>
+
+say "Creating a profile with $_" with $*RAKUDO-OPTIONS.profile;
+
+=end code
+
+=head2 stagestats
+
+The command line parameter that indicates whether stage statistics
+should be shown while compiling.
+
+=begin code :lang<raku>
+
+say "Showed stage statistics while compiling" if $*RAKUDO-OPTIONS.stagestats;
+
+=end code
+
+=head2 target
+
+The command line parameter indicating the target of the compilation.
+
+=begin code :lang<raku>
+
+say "Compiling for target $_" with $*RAKUDO-OPTIONS.target;
+
+=end code
 
 =head1 AUTHOR
 
