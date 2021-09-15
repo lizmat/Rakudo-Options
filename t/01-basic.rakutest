@@ -1,7 +1,7 @@
 use Test;
 use Rakudo::Options;
 
-plan 16;
+plan 15;
 
 my $ro := $*RAKUDO-OPTIONS;
 
@@ -13,7 +13,6 @@ ok $ro.I,        'did we run with -Ilib (2)';
 nok $ro.modules, 'did we run without addition modules (1)';
 nok $ro.M,       'did we run without addition modules (2)';
 
-nok $ro.ll-exception, 'did we run without --ll-exception';
 nok $ro.stagestats,   'did we run without --stagestats';
 nok $ro.profile,      'did we run without --profile';
 nok $ro.optimize,     'did we run without --optimize';

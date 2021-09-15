@@ -2,5 +2,8 @@ Revision history for Rakudo-Options
 
 {{$NEXT}}
 
+0.0.2  2021-09-15T17:14:47+02:00
+    - Remove test for --ll-exception, CI and zef handle that differently
+
 0.0.1  2021-09-15T16:56:51+02:00
     - Initial version
