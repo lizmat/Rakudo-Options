@@ -7,7 +7,7 @@
   ],
   "depends": [
   ],
-  "description": "blah blah blah",
+  "description": "Rakudo Command Line Options",
   "license": "Artistic-2.0",
   "name": "Rakudo::Options",
   "perl": "6.d",
@@ -16,8 +16,9 @@
   },
   "resources": [
   ],
-  "source-url": "",
+  "source-url": "https://github.com/lizmat/Rakudo-Options.git",
   "tags": [
+    "CLI"
   ],
   "test-depends": [
   ],
