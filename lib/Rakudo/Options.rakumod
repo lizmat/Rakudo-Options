@@ -264,9 +264,9 @@ dynamic variable, but that any ad-hoc created C<Rakudo::Options>
 can also be used.
 
 Also note that each of these attributes (with the exception of
-C<e>, C<includes> and C<modules> can be uses "as is" as parameter
-to the C<run> function, or as a parameter to the creation of a
-C<Proc::Async> object.
+C<e>, C<includes> and C<modules>) can be used "as is" as an
+argument to the C<run> function, or as a parameter to the creation
+of a C<Proc::Async> object.
 
 =head2 e
 
@@ -276,7 +276,7 @@ use the C<.program> accessor.
 
 =begin code :lang<raku>
 
-say "running as a one-liner" if $*RAKUDO-OPTIONS;
+say "running as a one-liner" if $*RAKUDO-OPTIONS.e;
 
 =end code
 
