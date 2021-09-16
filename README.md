@@ -51,11 +51,11 @@ The string of the `--encoding` flag to be considered specified.
 
   * executable
 
-String indicating the executable with which the process is supposed to be running.
+String or `IO::Path` object indicating the executable with which the process is supposed to be running.
 
   * includes
 
-The `List` of The names of the directories that should be considered to have been specified with `-I`.
+The `List` of the names of the directories that should be considered to have been specified with `-I`.
 
   * ll-exception
 
@@ -83,7 +83,7 @@ Whether the `--profile` flag is to be specifiied. Can be given as a `Bool`, or a
 
   * program
 
-A string with the name of the script that is supposed to be running.
+A string (or an `IO::Path` object) with the name of the script that is supposed to be running.
 
   * stagestats
 
@@ -245,6 +245,55 @@ The command line parameter indicating the target of the compilation.
 
 ```raku
 say "Compiling for target $_" with $*RAKUDO-OPTIONS.target;
+```
+
+METHODS
+=======
+
+run
+---
+
+The `.run` method returns a `Proc::Async` object by calling the `run` command with the `.run-parameters` of the `Rakudo::Options` object, and any additional positional and named arguments that you give it.
+
+```raku
+Rakudo::Options.new(
+  program => $*PROGRAM.sibling('run.raku')
+).run(<foo bar>);
+
+my $ro = Rakudo::Options.new(
+  program => $*PROGRAM.sibling('run.raku')
+);
+my $output = $ro.run(<foo bar>, :out).out.slurp;
+```
+
+run-with-environment-variable
+-----------------------------
+
+The `.run-with-environment-variable` is like the `.run` method, but it also takes a `Pair` as the first positional parameter. This pair should have the key as the name of an environment variable to be set, and as value, the value that environment variable should have when calling `run`.
+
+It returns the `Proc::Async` object in the parent process, and `Nil` in the child process.
+
+```raku
+# parent process
+if $*RAKUDO-OPTIONS.run-with-environment-variable(
+  (MVM_SPESH_LOG => 'spesh-log')  # note extra parentheses needed
+) {
+    # inspect spesh-log
+    exit;
+}
+# child process, code you want spesh-logged
+```
+
+run-parameters
+--------------
+
+The `.run-parameters` method returns a `Slip` with all of the parameters that should be passed to the `run` command. It is an internal helper method, that could be used for introspection and debugging, or if you want to execute your own `run` commands.
+
+```raku
+my $ro := Rakudo::Options.new(
+  program => $*PROGRAM.sibling('run.raku')
+);
+run $ro.run-parameters, <foo bar>;
 ```
 
 AUTHOR

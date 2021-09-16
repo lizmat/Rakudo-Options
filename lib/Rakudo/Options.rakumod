@@ -49,7 +49,7 @@ my sub flatten(str $letter, @values) {
       !! Empty
 }
 
-class Rakudo::Options:ver<0.0.2>:auth<zef:lizmat> {
+class Rakudo::Options:ver<0.0.3>:auth<zef:lizmat> {
     has @.includes is built(:bind) = multiple('I');
     has @.modules  is built(:bind) = multiple('M');
     has $.ll-exception = nqp::existskey($options,'ll-exception');
@@ -107,15 +107,21 @@ class Rakudo::Options:ver<0.0.2>:auth<zef:lizmat> {
         $!M := flatten('M',@!modules);
     }
 
+    method run-parameters(Rakudo::Options:D:) {
+        Slip.new($!executable, $!ll-exception, $!stagestats, $!n, $!p,
+          $!profile, $!optimize, $!encoding, $!target, $!I, $!M, $!program
+        );
+    }
+
+    proto method run(|) {*}
     multi method run(Rakudo::Options:D:) {
         self.run(@*ARGS, |%_)
     }
     multi method run(Rakudo::Options:D: *@ARGS) {
-        run $!executable, $!ll-exception, $!stagestats, $!n, $!p,
-            $!profile, $!optimize, $!encoding, $!target, $!I, $!M,
-            $!program, @ARGS, |%_
+        run self.run-parameters, @ARGS, |%_
     }
 
+    proto method run-with-environment-variable(|) {*}
     multi method run-with-environment-variable(Rakudo::Options:D:
       Pair:D $var
     ) {
@@ -131,9 +137,7 @@ class Rakudo::Options:ver<0.0.2>:auth<zef:lizmat> {
         }
         else {
             my %env = %*ENV, ($_ with %_<env>), $var;
-            run $!executable, $!ll-exception, $!stagestats, $!n, $!p,
-                $!profile, $!optimize, $!encoding, $!target, $!I, $!M,
-                $!program, @ARGS, |%_, :%env
+            run self.run-parameters, @ARGS, |%_, :%env
         }
     }
 }
@@ -198,12 +202,12 @@ The string of the C<--encoding> flag to be considered specified.
 
 =item executable
 
-String indicating the executable with which the process is supposed to
-be running.
+String or C<IO::Path> object indicating the executable with which the
+process is supposed to be running.
 
 =item includes
 
-The C<List> of The names of the directories that should be considered
+The C<List> of the names of the directories that should be considered
 to have been specified with C<-I>.
 
 =item ll-exception
@@ -237,7 +241,8 @@ C<Bool>, or as a string (indicating the type of profile requested).
 
 =item program
 
-A string with the name of the script that is supposed to be running.
+A string (or an C<IO::Path> object) with the name of the script that
+is supposed to be running.
 
 =item stagestats
 
@@ -435,6 +440,67 @@ The command line parameter indicating the target of the compilation.
 =begin code :lang<raku>
 
 say "Compiling for target $_" with $*RAKUDO-OPTIONS.target;
+
+=end code
+
+=head1 METHODS
+
+=head2 run
+
+The C<.run> method returns a C<Proc::Async> object by calling the C<run>
+command with the C<.run-parameters> of the C<Rakudo::Options> object,
+and any additional positional and named arguments that you give it.
+
+=begin code :lang<raku>
+
+Rakudo::Options.new(
+  program => $*PROGRAM.sibling('run.raku')
+).run(<foo bar>);
+
+my $ro = Rakudo::Options.new(
+  program => $*PROGRAM.sibling('run.raku')
+);
+my $output = $ro.run(<foo bar>, :out).out.slurp;
+
+=end code
+
+=head2 run-with-environment-variable
+
+The C<.run-with-environment-variable> is like the C<.run> method, but
+it also takes a C<Pair> as the first positional parameter.  This pair
+should have the key as the name of an environment variable to be set,
+and as value, the value that environment variable should have when
+calling C<run>.
+
+It returns the C<Proc::Async> object in the parent process, and C<Nil>
+in the child process.
+
+=begin code :lang<raku>
+
+# parent process
+if $*RAKUDO-OPTIONS.run-with-environment-variable(
+  (MVM_SPESH_LOG => 'spesh-log')  # note extra parentheses needed
+) {
+    # inspect spesh-log
+    exit;
+}
+# child process, code you want spesh-logged
+
+=end code
+
+=head2 run-parameters
+
+The C<.run-parameters> method returns a C<Slip> with all of the
+parameters that should be passed to the C<run> command.  It is
+an internal helper method, that could be used for introspection
+and debugging, or if you want to execute your own C<run> commands.
+
+=begin code :lang<raku>
+
+my $ro := Rakudo::Options.new(
+  program => $*PROGRAM.sibling('run.raku')
+);
+run $ro.run-parameters, <foo bar>;
 
 =end code
 

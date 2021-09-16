@@ -1,8 +1,10 @@
 use Test;
 use Rakudo::Options;
 
-Rakudo::Options.new(
+my $ro := Rakudo::Options.new(
   program => $*PROGRAM.sibling('run.raku')
-).run(<foo bar>);
+);
+
+run $ro.run-parameters, <foo bar>;
 
 # vim: expandtab shiftwidth=4

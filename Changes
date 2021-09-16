@@ -2,6 +2,12 @@ Revision history for Rakudo-Options
 
 {{$NEXT}}
 
+0.0.3  2021-09-16T11:03:31+02:00
+    - Add .run-parameters helper method and documentation
+    - Add documentation for .run, .run-with-environment-variable methods
+    - Add more tests
+    - Note that some strings can also be IO::Paths
+
 0.0.2  2021-09-15T17:14:47+02:00
     - Remove test for --ll-exception, CI and zef handle that differently
 
