@@ -49,7 +49,7 @@ my sub flatten(str $letter, @values) {
       !! Empty
 }
 
-class Rakudo::Options:ver<0.0.3>:auth<zef:lizmat> {
+class Rakudo::Options:ver<0.0.4>:auth<zef:lizmat> {
     has @.includes is built(:bind) = multiple('I');
     has @.modules  is built(:bind) = multiple('M');
     has $.ll-exception = nqp::existskey($options,'ll-exception');
