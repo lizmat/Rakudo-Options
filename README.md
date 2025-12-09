@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/lizmat/Rakudo-Options/workflows/test/badge.svg)](https://github.com/lizmat/Rakudo-Options/actions)
+[![Actions Status](https://github.com/lizmat/Rakudo-Options/actions/workflows/linux.yml/badge.svg)](https://github.com/lizmat/Rakudo-Options/actions) [![Actions Status](https://github.com/lizmat/Rakudo-Options/actions/workflows/macos.yml/badge.svg)](https://github.com/lizmat/Rakudo-Options/actions) [![Actions Status](https://github.com/lizmat/Rakudo-Options/actions/workflows/windows.yml/badge.svg)](https://github.com/lizmat/Rakudo-Options/actions)
 
 NAME
 ====
@@ -100,7 +100,7 @@ Please note that all accessors return `Empty` if they were not considered to be 
 
 Also note that all of the examples use the `$*RAKUDO-OPTIONS` dynamic variable, but that any ad-hoc created `Rakudo::Options` can also be used.
 
-Also note that each of these attributes (with the exception of `e`, `includes` and `modules` can be uses "as is" as parameter to the `run` function, or as a parameter to the creation of a `Proc::Async` object.
+Also note that each of these attributes (with the exception of `e`, `includes` and `modules`) can be used "as is" as an argument to the `run` function, or as a parameter to the creation of a `Proc::Async` object.
 
 e
 -
@@ -108,7 +108,7 @@ e
 The code that was considered to be specified with `-e`. If you want to transparently run a script, or the `-e` code, you should use the `.program` accessor.
 
 ```raku
-say "running as a one-liner" if $*RAKUDO-OPTIONS;
+say "running as a one-liner" if $*RAKUDO-OPTIONS.e;
 ```
 
 encoding
@@ -301,10 +301,14 @@ AUTHOR
 
 Elizabeth Mattijsen <liz@raku.rocks>
 
+Source can be located at: https://github.com/lizmat/Rakudo-Options . Comments and Pull Requests are welcome.
+
+If you like this module, or what I'm doing more generally, committing to a [small sponsorship](https://github.com/sponsors/lizmat/) would mean a great deal to me!
+
 COPYRIGHT AND LICENSE
 =====================
 
-Copyright 2021 Elizabeth Mattijsen
+Copyright 2021, 2025 Elizabeth Mattijsen
 
 This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

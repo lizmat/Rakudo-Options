@@ -1,14 +1,11 @@
 use Test;
 use Rakudo::Options;
 
-plan 15;
+plan 13;
 
 my $ro := $*RAKUDO-OPTIONS;
 
 ok $ro, 'did we get a dynamic variable';
-
-ok $ro.includes, 'did we run with -Ilib (1)';
-ok $ro.I,        'did we run with -Ilib (2)';
 
 nok $ro.modules, 'did we run without addition modules (1)';
 nok $ro.M,       'did we run without addition modules (2)';

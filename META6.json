@@ -10,14 +10,20 @@
   "description": "Rakudo Command Line Options",
   "license": "Artistic-2.0",
   "name": "Rakudo::Options",
-  "perl": "6.d",
   "provides": {
     "Rakudo::Options": "lib/Rakudo/Options.rakumod"
   },
+  "raku": "6.d",
   "resources": [
   ],
   "source-url": "https://github.com/lizmat/Rakudo-Options.git",
+  "support": {
+    "bugtracker": "https://github.com/lizmat/Rakudo-Options/issues",
+    "email": "liz@raku.rock",
+    "source": "https://github.com/lizmat/Rakudo-Options.git"
+  },
   "tags": [
+    "Rakudo",
     "CLI"
   ],
   "test-depends": [

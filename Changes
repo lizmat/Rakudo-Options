@@ -1,6 +1,10 @@
 Revision history for Rakudo-Options
 
 {{$NEXT}}
+    - Fix test if run without -I argument
+    - Add CI badge for each OS
+    - Modernize pod
+    - Add preliminary coverage tests
 
 0.0.3  2021-09-16T11:03:31+02:00
     - Add .run-parameters helper method and documentation
