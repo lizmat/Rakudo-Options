@@ -14,9 +14,9 @@ INIT $options := nqp::ifnull(
 );
 
 # Debugging helper when module is called directly
-sub MAIN() {
-    with nqp::hllize($options) -> %hash {
-        say "$_.key(): { (try .value.raku) // .value.^name }"
+sub MAIN() {  # UNCOVERABLE
+    with nqp::hllize($options) -> %hash {  # UNCOVERABLE
+        say "$_.key(): { (try .value.raku) // .value.^name }"  # UNCOVERABLE
           for %hash;
     }
 }
@@ -49,7 +49,7 @@ my sub flatten(str $letter, @values) {
       !! Empty
 }
 
-class Rakudo::Options:ver<0.0.4>:auth<zef:lizmat> {
+class Rakudo::Options:ver<0.0.5>:auth<zef:lizmat> {
     has @.includes is built(:bind) = multiple('I');
     has @.modules  is built(:bind) = multiple('M');
     has $.ll-exception = nqp::existskey($options,'ll-exception');

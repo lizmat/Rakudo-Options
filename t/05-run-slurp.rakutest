@@ -1,7 +1,7 @@
 use Test;
 use Rakudo::Options;
 
-plan 1;
+plan 2;
 
 my $ro = Rakudo::Options.new(
   program => $*PROGRAM.sibling('run.raku')
@@ -10,6 +10,10 @@ my $ro = Rakudo::Options.new(
 my $output = $ro.run(<foo bar>, :out).out.slurp;
 
 is $output, "1..1\nok 1 - did we get the right parameters\n",
-  'did we get the right output';
+  'did we get the right output on success';
+
+$output = $ro.run(:out, :err).out.slurp;
+is $output, "1..1\nnot ok 1 - did we get the right parameters\n",
+  'did we get the right output on failure';
 
 # vim: expandtab shiftwidth=4

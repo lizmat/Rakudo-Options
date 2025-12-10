@@ -2,6 +2,9 @@ Revision history for Rakudo-Options
 
 {{$NEXT}}
 
+0.0.5  2025-12-10T11:52:49+01:00
+    - Bring coverage testing up to 100%
+
 0.0.4  2025-12-09T23:44:22+01:00
     - Fix test if run without -I argument
     - Add CI badge for each OS
